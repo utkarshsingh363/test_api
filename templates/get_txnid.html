@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Transaction Status</h1>
+    <hr>
+    <div class="mb-3">
+        <div class="form-group">
+            <label>Enter Transaction Id:</label>
+            <input class="form-control" type="text" id="txnid", name="txnid">
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="submit_message();">Submit</button>
+    </div>
+</body>
+<script>
+    function submit_message() {
+
+        var txnid = document.getElementById("txnid");
+
+
+        var entry = {
+            txnid: txnid.value
+        };
+
+        console.log(entry);
+
+        fetch('/get_txnid', {
+            method:"POST",
+            credentials:"include",
+            body:JSON.stringify(entry),
+            cache:"no-cache",
+            headers: new Headers({
+                "content-type":"application/json"
+            })
+        })
+        .then(function(response) {
+            if (response.status !==200){
+                console.log("Response status was not 200: $(response.status)")
+                return ;
+            }
+            response.json().then(function(data) {
+                console.log(data)
+            })
+        })
+
+    }
+</script>
+</html>
